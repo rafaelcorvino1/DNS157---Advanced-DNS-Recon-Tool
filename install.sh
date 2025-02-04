@@ -27,7 +27,8 @@ echo 'export PATH=$PATH:~/go/bin' >> ~/.bashrc
 
 echo "[+] Instalando ferramentas baseadas em Go..."
 go install -v github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest
-go install -v github.com/OWASP/Amass/v4/...@latest
+# Ajuste realizado: utilizar caminho correto para Amass
+go install -v github.com/owasp-amass/amass/v4/...@latest
 go install -v github.com/projectdiscovery/dnsx/cmd/dnsx@latest
 go install -v github.com/projectdiscovery/httpx/cmd/httpx@latest
 go install -v github.com/haccer/subjack@latest
