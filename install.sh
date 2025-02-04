@@ -27,7 +27,6 @@ echo 'export PATH=$PATH:~/go/bin' >> ~/.bashrc
 
 echo "[+] Instalando ferramentas baseadas em Go..."
 go install -v github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest
-# Ajuste realizado: utilizar caminho correto para Amass
 go install -v github.com/owasp-amass/amass/v4/...@latest
 go install -v github.com/projectdiscovery/dnsx/cmd/dnsx@latest
 go install -v github.com/projectdiscovery/httpx/cmd/httpx@latest
@@ -38,32 +37,50 @@ python3 -m pip install --upgrade pip
 python3 -m pip install virtualenv
 
 echo "[+] Instalando Sublist3r..."
-git clone https://github.com/aboul3la/Sublist3r.git ~/Sublist3r
-cd ~/Sublist3r
-python3 -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-deactivate
-cd ~
+if [ ! -d "$HOME/Sublist3r" ]; then
+    git clone https://github.com/aboul3la/Sublist3r.git "$HOME/Sublist3r"
+    cd "$HOME/Sublist3r"
+    python3 -m venv venv
+    source venv/bin/activate
+    pip install -r requirements.txt
+    deactivate
+    cd ~
+else
+    echo "[+] Sublist3r já existe. Pulando clonagem."
+fi
 
 echo "[+] Instalando dnsrecon..."
-git clone https://github.com/darkoperator/dnsrecon.git ~/dnsrecon
-cd ~/dnsrecon
-python3 -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-deactivate
-cd ~
+if [ ! -d "$HOME/dnsrecon" ]; then
+    git clone https://github.com/darkoperator/dnsrecon.git "$HOME/dnsrecon"
+    cd "$HOME/dnsrecon"
+    python3 -m venv venv
+    source venv/bin/activate
+    pip install -r requirements.txt
+    deactivate
+    cd ~
+else
+    echo "[+] dnsrecon já existe. Pulando clonagem."
+fi
 
 echo "[+] Instalando dnsenum..."
-git clone https://github.com/fwaeytens/dnsenum.git ~/dnsenum
-cd ~/dnsenum
-# Linha 'deactivate' removida pois não há ambiente virtual
-cd ~
+if [ ! -d "$HOME/dnsenum" ]; then
+    git clone https://github.com/fwaeytens/dnsenum.git "$HOME/dnsenum"
+    cd "$HOME/dnsenum"
+    # Linha 'deactivate' removida pois não há ambiente virtual
+    cd ~
+else
+    echo "[+] dnsenum já existe. Pulando clonagem."
+fi
 
 echo "[+] Clonando e configurando o DNS157 - Advanced DNS Recon Tool..."
-git clone https://github.com/rafaelcorvino1/DNS157---Advanced-DNS-Recon-Tool.git ~/DNS157
-cd ~/DNS157
+if [ ! -d "$HOME/DNS157" ]; then
+    git clone https://github.com/rafaelcorvino1/DNS157---Advanced-DNS-Recon-Tool.git "$HOME/DNS157"
+else
+    echo "[+] DNS157 já existe. Atualizando repositório..."
+    cd "$HOME/DNS157" && git pull && cd ~
+fi
+
+cd "$HOME/DNS157"
 
 # Garante que o DNS157.py possua shebang
 if ! head -n 1 DNS157.py | grep -q "^#!"; then
