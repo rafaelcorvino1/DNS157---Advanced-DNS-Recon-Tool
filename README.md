@@ -89,7 +89,7 @@ python3 DNS157.py <domain> [--timeout <seconds>] [--subjack-fp <path>] [--crtsh]
 - **Display help:**
 
   ```bash
-  python3 DNS.py -h
+  python3 DNS157.py -h
   ```
 
 - **Basic domain scan:**
