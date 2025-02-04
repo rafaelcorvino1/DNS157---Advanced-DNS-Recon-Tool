@@ -86,10 +86,14 @@ cd "$HOME/DNS157"
 
 # Garante que DNS157.py tenha o shebang correto
 if ! head -n 1 DNS157.py | grep -q "^#!"; then
-    sed -i '1i #!/usr/bin/env python3' DNS157.py
+    sed -i '1s/^ï»¿//' DNS157.py && sed -i '1s/^\r//' DNS157.py && sed -i '1i #!/usr/bin/env python3' DNS157.py
 fi
 
 chmod +x DNS157.py
+
+# Garante permissões adequadas para /usr/local/bin/
+sudo mkdir -p /usr/local/bin
+sudo chmod 755 /usr/local/bin
 sudo ln -sf "$HOME/DNS157/DNS157.py" /usr/local/bin/DNS157
 
 echo "[+] Instalação concluída!"
