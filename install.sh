@@ -6,7 +6,7 @@ echo "[+] Atualizando pacotes do sistema e instalando dependências..."
 sudo apt update && sudo apt install -y \
     git curl wget python3 python3-pip python3-venv \
     build-essential libpcap-dev \
-    bind9-dnsutils libnet-whois-ip-perl libio-socket-inet6-perl
+    bind9-dnsutils libnet-whois-ip-perl libio-socket-inet6-perl dos2unix
 
 # Verifica e instala Go
 if ! command -v go &> /dev/null; then
@@ -84,9 +84,16 @@ fi
 
 cd "$HOME/DNS157"
 
+# Corrige problema de quebras de linha do Windows
+echo "[+] Corrigindo formatação do arquivo DNS157.py..."
+dos2unix DNS157.py
+
+# Remove BOM UTF-8 caso esteja presente
+sed -i '1s/^\xEF\xBB\xBF//' DNS157.py
+
 # Garante que DNS157.py tenha o shebang correto
 if ! head -n 1 DNS157.py | grep -q "^#!"; then
-    sed -i '1s/^ï»¿//' DNS157.py && sed -i '1s/^\r//' DNS157.py && sed -i '1i #!/usr/bin/env python3' DNS157.py
+    sed -i '1i #!/usr/bin/env python3' DNS157.py
 fi
 
 chmod +x DNS157.py
