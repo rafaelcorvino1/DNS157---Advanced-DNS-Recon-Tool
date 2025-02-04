@@ -4,8 +4,6 @@
 
 **DNS157** is an advanced subdomain reconnaissance and DNS enumeration tool. It integrates various tools like `subfinder`, `amass`, `sublist3r`, `dnsx`, `httpx`, `dnsrecon`, `dnsenum`, `dig`, and `subjack` to identify subdomains, validate DNS resolutions, and detect potential takeover vulnerabilities.
 
-Project URL: [DNS157 - Advanced DNS Recon Tool](https://github.com/rafaelcorvino1/DNS157---Advanced-DNS-Recon-Tool)
-
 ## Features
 
 - Passive and active subdomain enumeration using `subfinder`, `amass`, and `sublist3r`.
@@ -23,7 +21,7 @@ Project URL: [DNS157 - Advanced DNS Recon Tool](https://github.com/rafaelcorvino
 
 ```bash
 git clone https://github.com/rafaelcorvino1/DNS157---Advanced-DNS-Recon-Tool.git
-cd DNS157
+cd DNS157---Advanced-DNS-Recon-Tool
 ```
 
 ### Python Requirements & Dependencies
