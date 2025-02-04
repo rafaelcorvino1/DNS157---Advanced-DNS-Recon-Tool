@@ -1,62 +1,46 @@
 #!/bin/bash
+
 set -e
 
-REQUIRED_GO_VERSION="1.21.5"
-GO_TARBALL="go${REQUIRED_GO_VERSION}.linux-amd64.tar.gz"
-GO_DOWNLOAD_URL="https://go.dev/dl/${GO_TARBALL}"
+echo "[+] Updating system packages and installing dependencies..."
+sudo apt update && sudo apt install -y \
+    git curl wget python3 python3-pip python3-venv \
+    build-essential libpcap-dev \
+    bind9-dnsutils libnet-whois-ip-perl libio-socket-inet6-perl
 
-echo "[+] Updating packages and installing system dependencies..."
-sudo apt update && sudo apt install -y git curl wget python3 python3-pip python3-venv build-essential libpcap-dev bind9-dnsutils
-
-if ! grep -q 'export PATH=\$PATH:/usr/local/go/bin' ~/.bashrc; then
-    echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.bashrc
-fi
-if ! grep -q 'export PATH=\$PATH:~/go/bin' ~/.bashrc; then
-    echo 'export PATH=$PATH:~/go/bin' >> ~/.bashrc
-fi
-export PATH=$PATH:/usr/local/go/bin:~/go/bin
-
-echo "[+] Checking for Go installation..."
-if command -v go &> /dev/null; then
-    INSTALLED_GO_VERSION=$(go version | awk '{print $3}' | sed 's/go//')
-    if [ "$INSTALLED_GO_VERSION" != "$REQUIRED_GO_VERSION" ]; then
-        echo "[+] Installed Go version ($INSTALLED_GO_VERSION) does not match required version ($REQUIRED_GO_VERSION). Updating..."
-        wget "$GO_DOWNLOAD_URL"
-        sudo rm -rf /usr/local/go
-        sudo tar -C /usr/local -xzf "$GO_TARBALL"
-        rm "$GO_TARBALL"
-    else
-        echo "[+] Go is already installed and up-to-date ($INSTALLED_GO_VERSION)!"
-    fi
-else
+echo "[+] Checking if Go is installed..."
+if ! command -v go &> /dev/null; then
     echo "[+] Go not found. Installing..."
-    wget "$GO_DOWNLOAD_URL"
+    wget https://go.dev/dl/go1.21.5.linux-amd64.tar.gz
     sudo rm -rf /usr/local/go
-    sudo tar -C /usr/local -xzf "$GO_TARBALL"
-    rm "$GO_TARBALL"
+    sudo tar -C /usr/local -xzf go1.21.5.linux-amd64.tar.gz
+    rm go1.21.5.linux-amd64.tar.gz
+    export PATH=$PATH:/usr/local/go/bin
+    echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.bashrc
+    source ~/.bashrc
+else
+    echo "[+] Go is already installed!"
 fi
 
 echo "[+] Creating directory for Go binaries..."
 mkdir -p ~/go/bin
+export PATH=$PATH:~/go/bin
+echo 'export PATH=$PATH:~/go/bin' >> ~/.bashrc
+source ~/.bashrc
 
 echo "[+] Installing Go-based tools..."
 go install -v github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest
-go install -v github.com/owasp-amass/amass/v4/...@latest
+go install -v github.com/OWASP/Amass/v4/...@latest
 go install -v github.com/projectdiscovery/dnsx/cmd/dnsx@latest
 go install -v github.com/projectdiscovery/httpx/cmd/httpx@latest
 go install -v github.com/haccer/subjack@latest
 
-echo "[+] Upgrading pip and installing virtualenv..."
+echo "[+] Installing Python-based tools..."
 python3 -m pip install --upgrade pip
 python3 -m pip install virtualenv
 
-if [ ! -d ~/Sublist3r ]; then
-    echo "[+] Cloning Sublist3r..."
-    git clone https://github.com/aboul3la/Sublist3r.git ~/Sublist3r
-else
-    echo "[+] Sublist3r already exists, updating..."
-    cd ~/Sublist3r && git pull && cd ~
-fi
+echo "[+] Installing Sublist3r..."
+git clone https://github.com/aboul3la/Sublist3r.git ~/Sublist3r
 cd ~/Sublist3r
 python3 -m venv venv
 source venv/bin/activate
@@ -64,13 +48,8 @@ pip install -r requirements.txt
 deactivate
 cd ~
 
-if [ ! -d ~/dnsrecon ]; then
-    echo "[+] Cloning dnsrecon..."
-    git clone https://github.com/darkoperator/dnsrecon.git ~/dnsrecon
-else
-    echo "[+] dnsrecon already exists, updating..."
-    cd ~/dnsrecon && git pull && cd ~
-fi
+echo "[+] Installing dnsrecon..."
+git clone https://github.com/darkoperator/dnsrecon.git ~/dnsrecon
 cd ~/dnsrecon
 python3 -m venv venv
 source venv/bin/activate
@@ -78,23 +57,21 @@ pip install -r requirements.txt
 deactivate
 cd ~
 
-if [ ! -d ~/dnsenum ]; then
-    echo "[+] Cloning dnsenum..."
-    git clone https://github.com/fwaeytens/dnsenum.git ~/dnsenum
-else
-    echo "[+] dnsenum already exists, updating..."
-    cd ~/dnsenum && git pull && cd ~
-fi
+echo "[+] Installing dnsenum..."
+git clone https://github.com/fwaeytens/dnsenum.git ~/dnsenum
 cd ~/dnsenum
-sudo apt install -y libnet-whois-ip-perl libio-socket-inet6-perl
+deactivate
 cd ~
 
-echo "[+] Finished! To apply PATH changes, restart your terminal or run 'source ~/.bashrc'."
-
+echo "[+] Cloning and setting up DNS157 - Advanced DNS Recon Tool..."
+git clone https://github.com/rafaelcorvino1/DNS157---Advanced-DNS-Recon-Tool.git ~/DNS157
+cd ~/DNS157
+chmod +x ~/DNS157---Advanced-DNS-Recon-Tool/DNS157.py
+sudo ln -s ~/DNS157---Advanced-DNS-Recon-Tool/DNS157.py /usr/local/bin/DNS157
 
 echo "[+] Installation completed!"
 
-echo -e "\n[INFO]Now you can now use DNS157 directly from the terminal(run 'source ~/.bashrc') ."
+echo -e "\n[INFO]Now you can now use DNS157 directly from the terminal."
 echo -e "[INFO] Example usage:\n"
-echo -e "DNS157 example.com\n"
+echo -e "    DNS157 example.com\n"
 
