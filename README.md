@@ -1,4 +1,11 @@
 # DNS157 - Advanced DNS Recon Tool
+![dns](https://github.com/user-attachments/assets/9c8b1e69-4736-4b10-a0c5-d1d2384845bb)
+
+
+
+https://github.com/user-attachments/assets/99a25cd6-ad55-4750-9fc4-9308910d38b5
+
+
 
 ## Description
 
