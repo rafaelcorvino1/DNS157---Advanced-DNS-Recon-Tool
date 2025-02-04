@@ -11,7 +11,7 @@ Project URL: [DNS157 - Advanced DNS Recon Tool](https://github.com/rafaelcorvino
 - Passive and active subdomain enumeration using `subfinder`, `amass`, and `sublist3r`.
 - Validation of active subdomains via `dnsx` or `httpx`.
 - Wildcard DNS detection to filter false positives.
-- `subjack` for subdomain takeover detection.
+- `subjack` for Subdomain Takeover vulnerability detection.
 - Enumeration of DNS records (AXFR, SOA, NS, TXT, MX, CNAME, SRV).
 - Collection of DNS resolution information using `dnsrecon` and `dnsenum`.
 - Comparison of DNS responses across different public resolvers.
@@ -117,7 +117,7 @@ python3 DNS157.py <domain> [--timeout <seconds>] [--subjack-fp <path>] [--crtsh]
 - `dnsx` / `httpx`: Verifies that enumerated subdomains resolve correctly via DNS.
 
 ### Takeover Detection
-- `subjack`: Detects vulnerable subdomains by comparing DNS responses against service fingerprints.
+- `subjack`: Detects subdomain takeover vulnerable by comparing DNS responses against service fingerprints.
 
 ### Advanced DNS Reconnaissance
 - `dnsrecon`: Performs zone transfers (AXFR), standard DNS queries, and DNSSEC zonewalks.
