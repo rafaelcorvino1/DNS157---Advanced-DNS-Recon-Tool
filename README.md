@@ -1,5 +1,5 @@
 
-# DNS157 - Advanced DNS Reconnaissance Framework
+# DNS157 - Advanced DNS Reconnaissance Tool
 
 
 https://github.com/user-attachments/assets/06eeaf26-aad2-465f-8b99-e0b2b56bb13e
