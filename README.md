@@ -49,6 +49,21 @@ Manually install the following tools from their official repositories:
 
 An automated installation script (`install.sh`) will be released soon. This script will install all required dependencies and configure the necessary tools within the system's PATH environment variable.
 
+
+## Note on API Key Usage
+
+Some of the integrated tools, such as `subfinder` and `amass`, support the use of API keys from third-party services (e.g., VirusTotal, SecurityTrails, Shodan, Censys, among others).
+
+Configuring valid API keys significantly improves enumeration results by:
+
+- Expanding the number of discovered subdomains
+- Accessing premium data sources not available to unauthenticated users
+- Reducing query rate limits imposed by public endpoints
+
+It is strongly recommended to configure API keys in the corresponding tool settings to maximize the effectiveness and coverage of DNS157 reconnaissance operations.
+
+Refer to each tool's official documentation for instructions on how to configure and use API keys.
+
 ## Usage
 
 ### Basic execution
