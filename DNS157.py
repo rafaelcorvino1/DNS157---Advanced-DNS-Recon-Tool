@@ -81,7 +81,7 @@ def discover_subdomains(domain, output_dir, wildcard_detected, test_subdomain, t
 
     if shutil.which("subfinder"):
         logging.info("Running Subfinder...")
-        sf = run_cmd(["subfinder", "-silent", "-d", domain], timeout=timeout)
+        sf = run_cmd(["subfinder", "-all", "-recursive", "-silent", "-t", "1000", "-d", domain], timeout=timeout)
         if sf:
             with open(subfinder_out, "w", encoding="utf-8") as f:
                 f.write(sf + "\n")
@@ -91,7 +91,7 @@ def discover_subdomains(domain, output_dir, wildcard_detected, test_subdomain, t
 
     if shutil.which("amass"):
         logging.info("Running Amass...")
-        am = run_cmd(["amass", "enum", "-passive", "-d", domain], timeout=timeout)
+        am = run_cmd(["amass", "enum", "-norecursive", "-passive", "-d", domain], timeout=timeout)
         if am:
             with open(amass_out, "w", encoding="utf-8") as f:
                 f.write(am + "\n")
@@ -147,10 +147,10 @@ def validate_subdomains(subdomains, output_dir, timeout=DEFAULT_TIMEOUT):
         f.write("\n".join(sorted(subdomains)))
     if shutil.which("dnsx"):
         logging.info("Validating with DNSx...")
-        run_cmd(["dnsx", "-silent", "-resp", "-l", tmp_list, "-o", valid_file], timeout=timeout)
+        run_cmd(["dnsx", "-recon", "-silent", "-l", tmp_list, "-o", valid_file], timeout=timeout)
     elif shutil.which("httpx"):
         logging.info("Validating with HTTPx...")
-        run_cmd(["httpx", "-silent", "-l", tmp_list, "-o", valid_file], timeout=timeout)
+        run_cmd(["httpx", "-silent", "-sc", "-ip", "-title", "-l", tmp_list, "-o", valid_file], timeout=timeout)
     else:
         shutil.copy(tmp_list, valid_file)
     valid_subs = []
@@ -181,8 +181,8 @@ def subdomain_takeover(valid_subs, output_dir, subjack_fp, timeout=DEFAULT_TIMEO
                 "-o", takefile,
                 "-ssl",
                 "-c", subjack_fp,
-                "-t", "10",
-                "-timeout", "10"
+                "-t", "50",
+                "-timeout", "15"
             ], timeout=300)
             if os.path.isfile(takefile):
                 with open(takefile, "r", encoding="utf-8") as tf:
