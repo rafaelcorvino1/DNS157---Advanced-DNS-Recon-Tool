@@ -1,3 +1,4 @@
+
 # DNS157 - Advanced DNS Reconnaissance Framework
 
 ## Overview
@@ -21,8 +22,8 @@
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/rafaelcorvino1/DNS157---Advanced-DNS-Recon-Tool.git
-cd DNS157---Advanced-DNS-Recon-Tool
+git clone https://github.com/rafaelcorvino1/DNS157.git
+cd DNS157
 ```
 
 ### 2. Install Go and Go-based tools
@@ -101,5 +102,5 @@ DNS157 was developed by Rafael Corvino and is based on the integration of variou
 
 ## Version
 
-Current version: 1.2  
+Current version: 1.2
 Last updated: April 2025
